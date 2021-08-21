@@ -1,0 +1,85 @@
+================================================================================
+or replace
+================================================================================
+CREATE OR REPLACE FUNCTION FOO () AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (or_replace)
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+immutable
+================================================================================
+CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql IMMUTABLE;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)
+    (function_volatility)))
+
+================================================================================
+stable
+================================================================================
+CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)
+    (function_volatility)))
+
+================================================================================
+volatile
+================================================================================
+CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql VOLATILE;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)
+    (function_volatility)))
+
+================================================================================
+wrong - many volatilities
+================================================================================
+CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE VOLATILE;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)
+    (function_volatility))
+  (ERROR))

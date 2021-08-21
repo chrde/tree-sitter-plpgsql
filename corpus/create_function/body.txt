@@ -1,0 +1,16 @@
+================================================================================
+Empty # todo: body as string, body with code
+================================================================================
+CREATE FUNCTION FOO () RETURNS BAZ AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (identifier)
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))

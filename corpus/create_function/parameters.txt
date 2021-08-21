@@ -1,0 +1,139 @@
+================================================================================
+Empty
+================================================================================
+CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+With argument
+================================================================================
+CREATE FUNCTION FOO (_foo bar.baz) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (function_parameter
+          (identifier)
+          (identifier))))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+With arguments
+================================================================================
+CREATE FUNCTION FOO (foo bar, foo bar) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (function_parameter
+          (identifier)
+          (identifier))
+        (function_parameter
+          (identifier)
+          (identifier))))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+Wrong - trailing comma (1)
+================================================================================
+CREATE FUNCTION FOO (foo bar,) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (function_parameter
+          (identifier)
+          (identifier))
+        (ERROR)))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+Wrong - trailing comma (2)
+================================================================================
+CREATE FUNCTION FOO (foo bar, foo bar,) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (function_parameter
+          (identifier)
+          (identifier))
+        (function_parameter
+          (identifier)
+          (identifier))
+        (ERROR)))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+Wrong - missing type
+================================================================================
+CREATE FUNCTION FOO (foo,) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (ERROR
+          (identifier))))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
+arrays
+================================================================================
+CREATE FUNCTION FOO (foo bar[], foo bar[][]) AS $$ $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (function_parameter
+          (identifier)
+          (identifier))
+        (function_parameter
+          (identifier)
+          (identifier))))
+    (block
+      (dollar_quote)
+      (dollar_quote))
+    (identifier)))
