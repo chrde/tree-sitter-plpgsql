@@ -1,0 +1,156 @@
+================================================================================
+basic
+================================================================================
+do $$ begin
+if true then select 1; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (true)
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+many statements
+================================================================================
+do $$ begin
+if true then select 1; select 2; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (true)
+          (select_statement
+            (select_item
+              (number)))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+if then else
+================================================================================
+do $$ begin
+if var <> 5 then return 1; else return 2; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))
+          (return_statement
+            (number))))
+      (dollar_quote))))
+
+================================================================================
+if then else if
+================================================================================
+do $$ begin
+if var > 5 then return 1; elsif var = 4 then return 2; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))))
+      (dollar_quote))))
+
+================================================================================
+elseif/elsif
+================================================================================
+do $$ begin
+if var > 5 then return 1; elsif var = 4 then return 2; elseif var = 3 then return 3; else return 4; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number))
+          (return_statement
+            (number))
+          (return_statement
+            (number))))
+      (dollar_quote))))
+
+================================================================================
+nested
+================================================================================
+do $$ begin
+if true then return 1; else if var = 4 then return 2; end if; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (true)
+          (return_statement
+            (number))
+          (if_statement
+            (op_expression
+              (identifier)
+              (comparison_op)
+              (number))
+            (return_statement
+              (number)))))
+      (dollar_quote))))

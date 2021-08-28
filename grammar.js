@@ -384,10 +384,21 @@ module.exports = grammar({
         $._statement,
         $.assign_statement,
         $.return_statement,
+        $.if_statement,
         $.execute_statement,
         $.perform_statement,
       ),
       ";",
+    ),
+
+    if_statement: $ => seq(
+      kw("if"), $._value_expression, kw("then"), repeat1($._plpgsql_statement),
+      repeat(seq(
+        choice(kw("elsif"), kw("elseif")),
+        $._value_expression, kw("then"), repeat1($._plpgsql_statement)
+      )),
+      optional(seq(kw("else"), repeat1($._plpgsql_statement))),
+      kw("end"), kw("if"),
     ),
 
     execute_statement: $ => seq(
