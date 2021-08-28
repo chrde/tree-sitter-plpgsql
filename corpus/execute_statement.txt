@@ -1,0 +1,106 @@
+================================================================================
+basic
+================================================================================
+do $$ begin execute 'command'; end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (string)))
+      (dollar_quote))))
+
+================================================================================
+into
+================================================================================
+do $$ begin execute 'command' into var; end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (string)
+          (into
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+into strict
+================================================================================
+do $$ begin execute 'command' into strict var; end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (string)
+          (into
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+using
+================================================================================
+do $$ begin execute 'command' using 1, foo(bar); end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (string)
+          (number)
+          (function_call
+            (identifier)
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+function call
+================================================================================
+do $$ begin execute foo() into strict var using 1; end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (function_call
+            (identifier))
+          (into
+            (identifier))
+          (number)))
+      (dollar_quote))))
+
+================================================================================
+string concatenation
+================================================================================
+do $$ begin execute 'foo' || 'bar' into _date; end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (op_expression
+            (string)
+            (other_op)
+            (string))
+          (into
+            (identifier))))
+      (dollar_quote))))

@@ -1,0 +1,177 @@
+================================================================================
+basic
+================================================================================
+grant all on table foo to postgres;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+all privileges
+================================================================================
+grant all privileges on table foo.bar to postgres;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+many users
+================================================================================
+grant all on table foo to my_user, group another_user, current_user, public, session_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier)
+      (identifier))))
+
+================================================================================
+on schema
+================================================================================
+GRANT CREATE, USAGE ON SCHEMA esl, esl_archive TO mercures_ws;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges
+      (identifier)
+      (identifier))
+    (grant_targets
+      (identifier)
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+all tables in schema
+================================================================================
+grant all on all tables in schema foo to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+many tables
+================================================================================
+grant all on table bar, baz to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier)
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+functions
+================================================================================
+grant all on all functions in schema foo to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+function
+================================================================================
+grant all on function bar(text), baz(_arg my.type) to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (grant_function
+        (identifier)
+        (identifier))
+      (grant_function
+        (identifier)
+        (identifier)
+        (identifier)))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+all sequences
+================================================================================
+grant all on all sequences in schema foo to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+many sequences
+================================================================================
+grant all on sequence bar, baz to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges)
+    (grant_targets
+      (identifier)
+      (identifier))
+    (grant_roles
+      (identifier))))
+
+================================================================================
+many privileges
+================================================================================
+grant connect, create, delete, execute, insert, references, select, temporary, trigger, truncate, update, usage on table bar to my_user;
+--------------------------------------------------------------------------------
+
+(source_file
+  (grant_statement
+    (grant_privileges
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier)
+      (identifier))
+    (grant_targets
+      (identifier))
+    (grant_roles
+      (identifier))))

@@ -1,0 +1,169 @@
+================================================================================
+on constraint do nothing
+================================================================================
+insert into foo default values on conflict on constraint foo do nothing;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier)))))
+
+================================================================================
+on conflict column names
+================================================================================
+insert into foo default values on conflict (foo, bar) do nothing;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier)
+        (identifier)))))
+
+================================================================================
+on conflict value expressions
+================================================================================
+insert into foo default values on conflict (coalesce(one, two), bar) do nothing;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (function_call
+          (identifier)
+          (identifier)
+          (identifier))
+        (identifier)))))
+
+================================================================================
+update with default
+================================================================================
+insert into foo default values on conflict (foo) do update set foo = default;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (update_value)))))
+
+================================================================================
+update with expression
+================================================================================
+insert into foo default values on conflict (foo) do update set foo = 1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (update_value
+          (number))))))
+
+================================================================================
+update with expression(1)
+================================================================================
+insert into foo default values on conflict (foo) do update set (foo) = (1);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (update_value
+          (number))))))
+
+================================================================================
+update with expression(2)
+================================================================================
+insert into foo default values on conflict (foo) do update set (foo, bar) = (1, 2, default);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (identifier)
+        (update_value
+          (number))
+        (update_value
+          (number))
+        (update_value)))))
+
+================================================================================
+update with expression(3)
+================================================================================
+insert into foo default values on conflict (foo) do update set foo = 1, bar = default, baz = (select 1);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (update_value
+          (number)))
+      (update_set
+        (identifier)
+        (update_value))
+      (update_set
+        (identifier)
+        (update_value
+          (select_statement
+            (select_item
+              (number))))))))
+
+================================================================================
+update with expression(4)
+================================================================================
+insert into foo default values on conflict (foo) do update set (foo) = (1), bar = default;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)
+    (insert_conflict
+      (conflict_target
+        (identifier))
+      (update_set
+        (identifier)
+        (update_value
+          (number)))
+      (update_set
+        (identifier)
+        (update_value)))))

@@ -1,7 +1,68 @@
 ================================================================================
-empty
+wrong - trailing comma (1)
 ================================================================================
-CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql;
+CREATE FUNCTION FOO (foo bar,) RETURNS void AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (var_declaration
+          (identifier)
+          (identifier))
+        (ERROR)))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)))
+
+================================================================================
+wrong - trailing comma (2)
+================================================================================
+CREATE FUNCTION FOO (foo bar, foo bar,) RETURNS void AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (var_declaration
+          (identifier)
+          (identifier))
+        (var_declaration
+          (identifier)
+          (identifier))
+        (ERROR)))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)))
+
+================================================================================
+wrong - missing type
+================================================================================
+CREATE FUNCTION FOO (foo,) RETURNS void AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters
+        (ERROR
+          (identifier))))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)))
+
+================================================================================
+wrong - many volatilities
+================================================================================
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql STABLE VOLATILE;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -12,87 +73,6 @@ CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql;
     (function_return
       (identifier))
     (string)
-    (identifier)))
-
-================================================================================
-with argument
-================================================================================
-CREATE FUNCTION FOO (_foo bar.baz) RETURNS void AS 'select' LANGUAGE sql;
---------------------------------------------------------------------------------
-
-(source_file
-  (create_function_statement
-    (function_signature
-      (identifier)
-      (function_parameters
-        (var_declaration
-          (identifier)
-          (identifier))))
-    (function_return
-      (identifier))
-    (string)
-    (identifier)))
-
-================================================================================
-default value
-================================================================================
-CREATE FUNCTION FOO (_foo bar.baz default '42') RETURNS void AS 'select' LANGUAGE sql;
---------------------------------------------------------------------------------
-
-(source_file
-  (create_function_statement
-    (function_signature
-      (identifier)
-      (function_parameters
-        (var_declaration
-          (identifier)
-          (identifier))
-        (string)))
-    (function_return
-      (identifier))
-    (string)
-    (identifier)))
-
-================================================================================
-with arguments
-================================================================================
-CREATE FUNCTION FOO (foo bar, foo bar) RETURNS void AS 'select' LANGUAGE sql;
---------------------------------------------------------------------------------
-
-(source_file
-  (create_function_statement
-    (function_signature
-      (identifier)
-      (function_parameters
-        (var_declaration
-          (identifier)
-          (identifier))
-        (var_declaration
-          (identifier)
-          (identifier))))
-    (function_return
-      (identifier))
-    (string)
-    (identifier)))
-
-================================================================================
-arrays
-================================================================================
-CREATE FUNCTION FOO (foo bar[], foo bar[][]) RETURNS void AS 'select' LANGUAGE sql;
---------------------------------------------------------------------------------
-
-(source_file
-  (create_function_statement
-    (function_signature
-      (identifier)
-      (function_parameters
-        (var_declaration
-          (identifier)
-          (identifier))
-        (var_declaration
-          (identifier)
-          (identifier))))
-    (function_return
-      (identifier))
-    (string)
-    (identifier)))
+    (identifier)
+    (function_volatility))
+  (ERROR))

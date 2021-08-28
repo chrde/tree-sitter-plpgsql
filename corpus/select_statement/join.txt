@@ -1,0 +1,311 @@
+================================================================================
+cross join
+================================================================================
+SELECT name FROM products cross join items;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (from_table
+            (identifier)))))))
+
+================================================================================
+join on
+================================================================================
+SELECT name FROM products join items on products.name = items.name;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (op_expression
+              (identifier)
+              (comparison_op)
+              (identifier))))))))
+
+================================================================================
+join using
+================================================================================
+select name from products join items using(foo);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))))))
+
+================================================================================
+natural join
+================================================================================
+select name from products natural join items;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier)))))))
+
+================================================================================
+inner join
+================================================================================
+select name from products inner join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+left join
+================================================================================
+select name from products left join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+right join
+================================================================================
+select name from products right join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+full join
+================================================================================
+select name from products full join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+left outer join
+================================================================================
+select name from products left outer join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+right outer join
+================================================================================
+select name from products right outer join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+full outer join
+================================================================================
+select name from products full outer join items on true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (true)))))))
+
+================================================================================
+many joins
+================================================================================
+select name from products
+    natural join a
+    cross join a
+    join a on a.foo=b.foo
+    inner join a using(foo)
+    left join a using(foo)
+    left outer join a using(foo)
+    right join a using(foo)
+    right outer join a using(foo)
+    full outer join a using(foo)
+    full join a using(foo);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier)))
+        (join_item
+          (from_table
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (op_expression
+              (identifier)
+              (comparison_op)
+              (identifier))))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))
+        (join_item
+          (join_type)
+          (from_table
+            (identifier))
+          (join_condition
+            (identifier)))))))

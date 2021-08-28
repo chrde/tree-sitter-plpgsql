@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := build
 .PHONY: build test bless
 
 build:
@@ -7,7 +7,6 @@ build:
 test:
 	@$(MAKE) --no-print-directory build
 	tree-sitter test
-	# watchexec --clear dune test
 
 bless:
 	@$(MAKE) --no-print-directory build

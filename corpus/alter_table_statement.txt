@@ -1,0 +1,353 @@
+================================================================================
+add column
+================================================================================
+alter table foo add bar text;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (table_column_item
+          (identifier)
+          (identifier))))))
+
+================================================================================
+if exists
+================================================================================
+alter table if exists foo add bar text;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (if_exists)
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (table_column_item
+          (identifier)
+          (identifier))))))
+
+================================================================================
+add column if not exists
+================================================================================
+alter table foo add column if not exists bar text;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (if_not_exists)
+        (table_column_item
+          (identifier)
+          (identifier))))))
+
+================================================================================
+drop column
+================================================================================
+alter table foo drop column bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)))))
+
+================================================================================
+drop column cascade
+================================================================================
+alter table foo drop column bar cascade;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+drop column restrict
+================================================================================
+alter table foo drop column bar restrict;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+drop column if exists
+================================================================================
+alter table foo drop column if exists bar restrict;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (if_exists)
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+set column default
+================================================================================
+alter table foo alter bar set default 4;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action
+          (number))))))
+
+================================================================================
+drop column default
+================================================================================
+alter table foo alter bar drop default;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action)))))
+
+================================================================================
+alter column type
+================================================================================
+alter table foo alter bar type text;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action
+          (alter_column_type
+            (identifier)))))))
+
+================================================================================
+alter column type(1)
+================================================================================
+alter table foo alter bar set data type text;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action
+          (alter_column_type
+            (identifier)))))))
+
+================================================================================
+alter column type(2)
+================================================================================
+alter table foo alter column bar set data type timestamptz using created at time zone 'utc';
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action
+          (alter_column_type
+            (identifier)
+            (time_expression
+              (identifier)
+              (string))))))))
+
+================================================================================
+column set not null
+================================================================================
+alter table foo alter bar set not null;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action)))))
+
+================================================================================
+column drop not null
+================================================================================
+alter table foo alter bar drop not null;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_column_action)))))
+
+================================================================================
+column add constraint
+================================================================================
+alter table foo add constraint u_bar unique(bar);
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (table_constraint
+          (identifier)
+          (table_constraint_ty
+            (identifier)))))))
+
+================================================================================
+column drop constraint
+================================================================================
+alter table foo drop constraint u_bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)))))
+
+================================================================================
+column drop constraint cascade
+================================================================================
+alter table foo drop constraint u_bar cascade;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+column drop constraint restrict
+================================================================================
+alter table foo drop constraint u_bar restrict;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+column drop constraint if exists
+================================================================================
+alter table foo drop constraint if exists u_bar restrict;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (if_exists)
+        (identifier)
+        (alter_table_fk_ref_action)))))
+
+================================================================================
+many changes in columns
+================================================================================
+alter table foo drop constraint foo, add unique(foo);
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_action
+        (identifier))
+      (alter_table_action
+        (table_constraint
+          (table_constraint_ty
+            (identifier)))))))
+
+================================================================================
+rename column
+================================================================================
+alter table foo rename column foo to bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_rename_column
+        (identifier)
+        (identifier)))))
+
+================================================================================
+rename constraint
+================================================================================
+alter table foo rename constraint foo to foo.bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_rename_constraint
+        (identifier)
+        (identifier)))))
+
+================================================================================
+rename table
+================================================================================
+alter table foo rename to foo.bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_rename_table
+        (identifier)))))
+
+================================================================================
+change schema
+================================================================================
+alter table foo set schema bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (alter_table_statement
+    (identifier)
+    (alter_table_change
+      (alter_table_change_schema
+        (identifier)))))

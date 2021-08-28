@@ -1,0 +1,190 @@
+================================================================================
+empty
+================================================================================
+DO $$ BEGIN END $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body)
+      (dollar_quote))))
+
+================================================================================
+empty(1)
+================================================================================
+DO $$ DECLARE BEGIN END $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (declarations)
+      (body)
+      (dollar_quote))))
+
+================================================================================
+many declare(s)
+================================================================================
+DO $$
+DECLARE one text;
+DECLARE
+    name text;
+    age bigint;
+BEGIN END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (declarations
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier))))
+      (declarations
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier)))
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier))))
+      (body)
+      (dollar_quote))))
+
+================================================================================
+declare variables
+================================================================================
+DO $$
+DECLARE
+    name text;
+    age bigint;
+BEGIN END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (declarations
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier)))
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier))))
+      (body)
+      (dollar_quote))))
+
+================================================================================
+declare with assignment
+================================================================================
+DO $$
+DECLARE
+    name text := 'hello';
+    age bigint:= (SELECT foo() + 1);
+BEGIN END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (declarations
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier))
+          (string))
+        (var_definition
+          (var_declaration
+            (identifier)
+            (identifier))
+          (select_statement
+            (select_item
+              (op_expression
+                (function_call
+                  (identifier))
+                (number))))))
+      (body)
+      (dollar_quote))))
+
+================================================================================
+perform
+================================================================================
+DO $$
+BEGIN
+    PERFORM foo();
+END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (perform_statement
+          (select_item
+            (function_call
+              (identifier)))))
+      (dollar_quote))))
+
+================================================================================
+many statements
+================================================================================
+DO $$
+BEGIN
+    SELECT 1;
+    foo.bar = lower(foo.baz);
+    RETURN 2;
+END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (select_statement
+          (select_item
+            (number)))
+        (assign_statement
+          (identifier)
+          (function_call
+            (identifier)
+            (identifier)))
+        (return_statement
+          (number)))
+      (dollar_quote))))
+
+================================================================================
+function call with select
+================================================================================
+DO $$ BEGIN perform exists(select 1); END $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (perform_statement
+          (select_item
+            (function_call
+              (identifier)
+              (select_statement
+                (select_item
+                  (number)))))))
+      (dollar_quote))))

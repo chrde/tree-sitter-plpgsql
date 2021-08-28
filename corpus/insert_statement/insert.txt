@@ -1,0 +1,160 @@
+================================================================================
+basic
+================================================================================
+insert into my_table values(1);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (insert_item
+        (number)))))
+
+================================================================================
+alias
+================================================================================
+insert into foo.my_table as alias values(1);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (as
+      (identifier))
+    (insert_items
+      (insert_item
+        (number)))))
+
+================================================================================
+default values
+================================================================================
+insert into foo.my_table default values;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items)))
+
+================================================================================
+many values
+================================================================================
+insert into foo.my_table values(1, 2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (insert_item
+        (number))
+      (insert_item
+        (number)))))
+
+================================================================================
+different kind of values
+================================================================================
+insert into foo.my_table values(1, DEFAULT, (select 1, 2));
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (insert_item
+        (number))
+      (insert_item)
+      (insert_item
+        (select_statement
+          (select_item
+            (number))
+          (select_item
+            (number)))))))
+
+================================================================================
+insert from select
+================================================================================
+insert into foo.my_table select column1 from foo bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (select_statement
+        (select_item
+          (identifier))
+        (select_from
+          (from_item
+            (from_table
+              (identifier)
+              (identifier))))))))
+
+================================================================================
+returning
+================================================================================
+insert into foo values(1) returning *, 1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (insert_item
+        (number)))
+    (insert_returning
+      (select_item
+        (star))
+      (select_item
+        (number)))))
+
+================================================================================
+with cte
+================================================================================
+with foo as (select * from bar)
+insert into my_table values(1);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (with_query
+      (with_query_item
+        (identifier)
+        (select_statement
+          (select_item
+            (star))
+          (select_from
+            (from_item
+              (from_table
+                (identifier)))))))
+    (identifier)
+    (insert_items
+      (insert_item
+        (number)))))
+
+================================================================================
+returning into
+================================================================================
+insert into foo(bar, baz) select * from another
+returning id into _var;
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (identifier)
+    (identifier)
+    (insert_items
+      (select_statement
+        (select_item
+          (star))
+        (select_from
+          (from_item
+            (from_table
+              (identifier))))))
+    (insert_returning
+      (select_item
+        (identifier)))
+    (into
+      (identifier))))

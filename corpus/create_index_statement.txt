@@ -1,0 +1,93 @@
+================================================================================
+basic
+================================================================================
+create index ON foo.bar(col);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_index_statement
+    (identifier)
+    (index_col
+      (identifier))))
+
+================================================================================
+with columns
+================================================================================
+create index on foo.bar (
+    col ASC NULLS FIRST,
+    col DESC NULLS LAST,
+    col NULLS FIRST,
+    (upper(col)) DESC);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_index_statement
+    (identifier)
+    (index_col
+      (identifier)
+      (index_col_dir)
+      (index_col_nulls))
+    (index_col
+      (identifier)
+      (index_col_dir)
+      (index_col_nulls))
+    (index_col
+      (identifier)
+      (index_col_nulls))
+    (index_col
+      (function_call
+        (identifier)
+        (identifier))
+      (index_col_dir))))
+
+================================================================================
+full syntax
+================================================================================
+create unique index concurrently if not exists idx_name on foo.bar using gist (col, (upper(bar)));
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_index_statement
+    (if_not_exists)
+    (identifier)
+    (identifier)
+    (index_using
+      (identifier))
+    (index_col
+      (identifier))
+    (index_col
+      (function_call
+        (identifier)
+        (identifier)))))
+
+================================================================================
+include
+================================================================================
+create index ON foo.bar(col) include (col1, col2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_index_statement
+    (identifier)
+    (index_col
+      (identifier))
+    (index_includes
+      (identifier)
+      (identifier))))
+
+================================================================================
+partial
+================================================================================
+create index ON foo.bar(col) where col > 25;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_index_statement
+    (identifier)
+    (index_col
+      (identifier))
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (number)))))

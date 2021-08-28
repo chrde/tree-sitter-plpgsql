@@ -1,0 +1,104 @@
+================================================================================
+whole table
+================================================================================
+delete from tasks;
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)))
+
+================================================================================
+where
+================================================================================
+delete from tasks where status <> 'Musical';
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (string)))))
+
+================================================================================
+returning
+================================================================================
+DELETE FROM tasks WHERE status = 'DONE' RETURNING *;
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (string)))
+    (select_item
+      (star))))
+
+================================================================================
+delete using subselect
+================================================================================
+DELETE FROM foo a USING (select baz from bar) b WHERE a.b = b.b;
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)
+    (identifier)
+    (delete_using
+      (from_item
+        (from_select
+          (select_statement
+            (select_item
+              (identifier))
+            (select_from
+              (from_item
+                (from_table
+                  (identifier)))))
+          (identifier))))
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (identifier)))))
+
+================================================================================
+with cte
+================================================================================
+with foo as (select * from bar)
+delete from baz;
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (with_query
+      (with_query_item
+        (identifier)
+        (select_statement
+          (select_item
+            (star))
+          (select_from
+            (from_item
+              (from_table
+                (identifier)))))))
+    (identifier)))
+
+================================================================================
+returning into
+================================================================================
+delete from foo
+returning id into _backup_id;
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)
+    (select_item
+      (identifier))
+    (into
+      (identifier))))

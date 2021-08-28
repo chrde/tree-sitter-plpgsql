@@ -1,0 +1,243 @@
+================================================================================
+where
+================================================================================
+select name from items where true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_where
+      (where_filter
+        (true)))))
+
+================================================================================
+into
+================================================================================
+select name into bar from items where true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (into
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_where
+      (where_filter
+        (true)))))
+
+================================================================================
+into strict
+================================================================================
+select name into strict bar from items where true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (into
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_where
+      (where_filter
+        (true)))))
+
+================================================================================
+into many
+================================================================================
+select foo, bar into a_foo, a_bar from items where true;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_item
+      (identifier))
+    (into
+      (identifier)
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_where
+      (where_filter
+        (true)))))
+
+================================================================================
+having
+================================================================================
+select sum(len) from items having sum(len) < 5;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (function_call
+        (identifier)
+        (identifier)))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_having
+      (op_expression
+        (function_call
+          (identifier)
+          (identifier))
+        (comparison_op)
+        (number)))))
+
+================================================================================
+group by
+================================================================================
+select name from items group by 1, 2;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_group_by
+      (number)
+      (number))))
+
+================================================================================
+order by
+================================================================================
+select name from items order by 1, 2 asc, 3 desc, 4 + 4;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_order_by
+      (order_by_item
+        (number))
+      (order_by_item
+        (number)
+        (order_by_direction))
+      (order_by_item
+        (number)
+        (order_by_direction))
+      (order_by_item
+        (op_expression
+          (number)
+          (number))))))
+
+================================================================================
+limit
+================================================================================
+select name limit 1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier)))
+  (ERROR
+    (number)))
+
+================================================================================
+limit offet
+================================================================================
+select name limit 1 offset 5;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_limit
+      (number)
+      (number))))
+
+================================================================================
+offset limit
+================================================================================
+select name offset 5 limit 1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_limit
+      (number)
+      (number))))
+
+================================================================================
+limit all offset
+================================================================================
+select name limit all offset 5;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_limit
+      (number))))
+
+================================================================================
+offset limit all
+================================================================================
+select name offset 5 limit all;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_limit
+      (number))))
+
+================================================================================
+with cte
+================================================================================
+with foo as (select * from bar)
+select * from foo;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (with_query
+      (with_query_item
+        (identifier)
+        (select_statement
+          (select_item
+            (star))
+          (select_from
+            (from_item
+              (from_table
+                (identifier)))))))
+    (select_item
+      (star))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))))

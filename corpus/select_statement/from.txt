@@ -1,0 +1,179 @@
+================================================================================
+from table
+================================================================================
+SELECT name FROM products;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))))
+
+================================================================================
+from many tables
+================================================================================
+SELECT products.name, i.name FROM products, items i, bar as baz;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier)))
+      (from_item
+        (from_table
+          (identifier)
+          (identifier)))
+      (from_item
+        (from_table
+          (identifier)
+          (identifier))))))
+
+================================================================================
+sub select
+================================================================================
+SELECT name FROM (select foo from bar) alias, (select baz from bar) as alias1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_select
+          (select_statement
+            (select_item
+              (identifier))
+            (select_from
+              (from_item
+                (from_table
+                  (identifier)))))
+          (identifier)))
+      (from_item
+        (from_select
+          (select_statement
+            (select_item
+              (identifier))
+            (select_from
+              (from_item
+                (from_table
+                  (identifier)))))
+          (identifier))))))
+
+================================================================================
+from function call
+================================================================================
+select name from foo(bar, baz);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier)
+            (identifier)
+            (identifier)))))))
+
+================================================================================
+from function call with alias
+================================================================================
+select name from foo() bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier))
+          (identifier))))))
+
+================================================================================
+from function call with alias(1)
+================================================================================
+select name from foo() as bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier))
+          (identifier))))))
+
+================================================================================
+from function call with alias in params
+================================================================================
+select name from foo() bar(alias1, alias2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier))
+          (identifier)
+          (identifier)
+          (identifier))))))
+
+================================================================================
+from function call with alias in params(1)
+================================================================================
+select name from foo() as bar(alias1, alias2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier))
+          (identifier)
+          (identifier)
+          (identifier))))))
+
+================================================================================
+from function call with alias in params(2)
+================================================================================
+select name from foo() as (alias1, alias2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_function
+          (function_call
+            (identifier))
+          (identifier)
+          (identifier))))))

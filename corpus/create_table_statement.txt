@@ -1,0 +1,293 @@
+================================================================================
+empty table
+================================================================================
+create table foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)))
+
+================================================================================
+temp
+================================================================================
+create temp table foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (temporary)
+    (identifier)))
+
+================================================================================
+temporary
+================================================================================
+create temporary table foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (temporary)
+    (identifier)))
+
+================================================================================
+if not exists
+================================================================================
+create table if not exists foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (if_not_exists)
+    (identifier)))
+
+================================================================================
+unlogged
+================================================================================
+create unlogged table foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)))
+
+================================================================================
+constraints with deferred
+================================================================================
+create table foo(
+    col1 text not null deferrable,
+    col2 bigint not null deferrable initially immediate,
+    col3 numeric(2, 4) null deferrable initially deferred
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty)
+          (constraint_when))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty)
+          (constraint_when))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (predefined_types
+          (precision
+            (number)
+            (number)))
+        (column_constraint
+          (column_constraint_ty)
+          (constraint_when))))))
+
+================================================================================
+column constraints
+================================================================================
+create table foo(
+    col1 text not null primary key check( col1 > b),
+    col2 bigint null default 25 deferrable initially immediate constraint a_name unique,
+    col3 numeric(2, 4) null deferrable initially deferred,
+    col4 int references foo.baz
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty))
+        (column_constraint
+          (column_constraint_ty))
+        (column_constraint
+          (column_constraint_ty
+            (op_expression
+              (identifier)
+              (comparison_op)
+              (identifier))))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty))
+        (column_constraint
+          (column_constraint_ty
+            (number))
+          (constraint_when))
+        (column_constraint
+          (identifier)
+          (column_constraint_ty))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (predefined_types
+          (precision
+            (number)
+            (number)))
+        (column_constraint
+          (column_constraint_ty)
+          (constraint_when))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty
+            (constraint_foreign_key
+              (identifier))))))))
+
+================================================================================
+column fk references
+================================================================================
+create table foo(
+    col int references foo.baz(col1, col2),
+    col int references foo.baz on delete set default,
+    col int references foo.baz on delete no action on update cascade,
+    col int references foo.baz on delete restrict on update set null
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty
+            (constraint_foreign_key
+              (identifier)
+              (identifier)
+              (identifier))))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty
+            (constraint_foreign_key
+              (identifier)
+              (fk_action
+                (fk_ref_action)))))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty
+            (constraint_foreign_key
+              (identifier)
+              (fk_action
+                (fk_ref_action))
+              (fk_action
+                (fk_ref_action)))))))
+    (create_table_item
+      (table_column_item
+        (identifier)
+        (identifier)
+        (column_constraint
+          (column_constraint_ty
+            (constraint_foreign_key
+              (identifier)
+              (fk_action
+                (fk_ref_action))
+              (fk_action
+                (fk_ref_action)))))))))
+
+================================================================================
+table constraints - check
+================================================================================
+create table foo(
+    constraint one check (column_a > 5),
+    check (column_b > 5)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_constraint
+        (identifier)
+        (table_constraint_ty
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number)))))
+    (create_table_item
+      (table_constraint
+        (table_constraint_ty
+          (op_expression
+            (identifier)
+            (comparison_op)
+            (number)))))))
+
+================================================================================
+table constraints - unique
+================================================================================
+create table foo(
+    unique (column_a, column_b)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_constraint
+        (table_constraint_ty
+          (identifier)
+          (identifier))))))
+
+================================================================================
+table constraints - pk
+================================================================================
+create table foo(
+    primary key (column_a, column_b)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_constraint
+        (table_constraint_ty
+          (identifier)
+          (identifier))))))
+
+================================================================================
+table constraints - fk
+================================================================================
+create table foo(
+    foreign key (column_a, column_b) references foo(name, age, bar)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (create_table_item
+      (table_constraint
+        (table_constraint_ty
+          (identifier)
+          (identifier)
+          (constraint_foreign_key
+            (identifier)
+            (identifier)
+            (identifier)
+            (identifier)))))))

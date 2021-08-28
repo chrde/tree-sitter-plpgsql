@@ -1,7 +1,26 @@
 ================================================================================
+body block
+================================================================================
+CREATE FUNCTION FOO () RETURNS void AS $$ BEGIN END $$ LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (identifier))
+    (block
+      (dollar_quote)
+      (body)
+      (dollar_quote))
+    (identifier)))
+
+================================================================================
 or replace
 ================================================================================
-CREATE OR REPLACE FUNCTION FOO () AS $$ $$ LANGUAGE sql;
+CREATE OR REPLACE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -10,15 +29,15 @@ CREATE OR REPLACE FUNCTION FOO () AS $$ $$ LANGUAGE sql;
     (function_signature
       (identifier)
       (function_parameters))
-    (block
-      (dollar_quote)
-      (dollar_quote))
+    (function_return
+      (identifier))
+    (string)
     (identifier)))
 
 ================================================================================
 immutable
 ================================================================================
-CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql IMMUTABLE;
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql IMMUTABLE;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -26,16 +45,16 @@ CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql IMMUTABLE;
     (function_signature
       (identifier)
       (function_parameters))
-    (block
-      (dollar_quote)
-      (dollar_quote))
+    (function_return
+      (identifier))
+    (string)
     (identifier)
     (function_volatility)))
 
 ================================================================================
 stable
 ================================================================================
-CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE;
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql STABLE;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -43,16 +62,16 @@ CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE;
     (function_signature
       (identifier)
       (function_parameters))
-    (block
-      (dollar_quote)
-      (dollar_quote))
+    (function_return
+      (identifier))
+    (string)
     (identifier)
     (function_volatility)))
 
 ================================================================================
 volatile
 ================================================================================
-CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql VOLATILE;
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql VOLATILE;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -60,16 +79,16 @@ CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql VOLATILE;
     (function_signature
       (identifier)
       (function_parameters))
-    (block
-      (dollar_quote)
-      (dollar_quote))
+    (function_return
+      (identifier))
+    (string)
     (identifier)
     (function_volatility)))
 
 ================================================================================
-wrong - many volatilities
+returns setof
 ================================================================================
-CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE VOLATILE;
+CREATE FUNCTION FOO () RETURNS SETOF text AS 'select' LANGUAGE sql;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -77,9 +96,30 @@ CREATE FUNCTION FOO () AS $$ $$ LANGUAGE sql STABLE VOLATILE;
     (function_signature
       (identifier)
       (function_parameters))
-    (block
-      (dollar_quote)
-      (dollar_quote))
-    (identifier)
-    (function_volatility))
-  (ERROR))
+    (function_return
+      (return_setof
+        (identifier)))
+    (string)
+    (identifier)))
+
+================================================================================
+returns table
+================================================================================
+CREATE FUNCTION FOO () RETURNS TABLE(a text, b bigint) AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (return_table
+        (var_declaration
+          (identifier)
+          (identifier))
+        (var_declaration
+          (identifier)
+          (identifier))))
+    (string)
+    (identifier)))

@@ -1,0 +1,184 @@
+================================================================================
+basic
+================================================================================
+create trigger tr before insert on mytable execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+constraint
+================================================================================
+create constraint trigger tr before insert on mytable execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+after
+================================================================================
+create trigger tr after insert on mytable execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+instead of
+================================================================================
+create trigger tr instead of insert on mytable execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+many when
+================================================================================
+create trigger tr before insert or update or delete or truncate on mytable execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+scope for statement
+================================================================================
+create trigger tr before insert on mytable for statement execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_scope)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+scope for each row
+================================================================================
+create trigger tr before insert on mytable for each row execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_scope)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+scope for each statement
+================================================================================
+create trigger tr before insert on mytable for each statement execute foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_scope)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+execute procedure
+================================================================================
+create trigger tr before insert on mytable execute procedure foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+execute function
+================================================================================
+create trigger tr before insert on mytable execute function foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_exec
+      (function_call
+        (identifier)))))
+
+================================================================================
+when
+================================================================================
+create constraint trigger a.tr before insert or delete on foo.mytable for each statement when (new.baz != old.baz) execute function foo();
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_trigger_statement
+    (identifier)
+    (trigger_when)
+    (trigger_event)
+    (identifier)
+    (trigger_scope)
+    (trigger_cond
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (identifier)))
+    (trigger_exec
+      (function_call
+        (identifier)))))
