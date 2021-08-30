@@ -60,10 +60,11 @@ do $$ begin execute 'command' using 1, foo(bar); end $$;
       (body
         (execute_statement
           (string)
-          (number)
-          (function_call
-            (identifier)
-            (identifier))))
+          (execute_using
+            (number)
+            (function_call
+              (identifier)
+              (identifier)))))
       (dollar_quote))))
 
 ================================================================================
@@ -82,7 +83,8 @@ do $$ begin execute foo() into strict var using 1; end $$;
             (identifier))
           (into
             (identifier))
-          (number)))
+          (execute_using
+            (number))))
       (dollar_quote))))
 
 ================================================================================
@@ -102,5 +104,111 @@ do $$ begin execute 'foo' || 'bar' into _date; end $$;
             (other_op)
             (string))
           (into
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+simple nested dollar quote
+================================================================================
+do $$ begin
+execute format(
+    $sql$
+        select %1$s,
+        select 2,
+    $sql$
+    , _tbl_name) using bar;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (function_call
+            (identifier)
+            (dollar_quote_string)
+            (identifier))
+          (execute_using
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+execute format dollar quote
+================================================================================
+do $$ begin
+execute format(
+    $sql$
+        update %1$s
+        set foo = $1
+    $sql$
+    , _tbl_name) using bar;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (function_call
+            (identifier)
+            (dollar_quote_string)
+            (identifier))
+          (execute_using
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+complex
+================================================================================
+do $$ begin
+EXECUTE FORMAT(
+    $sql$
+        UPDATE %2$s SET new_val = $1
+        FROM ( SELECT serial AS _serial, created FROM %1$s ) t1
+    $sql$
+    , _tbl_name) USING baz, bar;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (function_call
+            (identifier)
+            (dollar_quote_string)
+            (identifier))
+          (execute_using
+            (identifier)
+            (identifier))))
+      (dollar_quote))))
+
+================================================================================
+complex(1)
+================================================================================
+do $$ begin
+EXECUTE FORMAT($sql$
+foo
+$sql$ , _tbl_name) USING bar.baz;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (execute_statement
+          (function_call
+            (identifier)
+            (dollar_quote_string)
+            (identifier))
+          (execute_using
             (identifier))))
       (dollar_quote))))

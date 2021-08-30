@@ -1,11 +1,9 @@
 ================================================================================
-return
+dummy
 ================================================================================
-DO $$
-BEGIN
-    RETURN 1;
-END
-$$;
+do $$ begin
+raise;
+end $$;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -13,18 +11,15 @@ $$;
     (block
       (dollar_quote)
       (body
-        (return_statement
-          (number)))
+        (ERROR))
       (dollar_quote))))
 
 ================================================================================
-return query
+basic
 ================================================================================
-DO $$
-BEGIN
-    RETURN QUERY select 1;
-END
-$$;
+do $$ begin
+raise 'alarms';
+end $$;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -32,20 +27,16 @@ $$;
     (block
       (dollar_quote)
       (body
-        (return_statement
-          (select_statement
-            (select_item
-              (number)))))
+        (raise_statement
+          (string)))
       (dollar_quote))))
 
 ================================================================================
-return query execute
+with level
 ================================================================================
-DO $$
-BEGIN
-    RETURN QUERY execute format($sql$ select %1$s, $1;$sql$, _foo) using bar;
-END
-$$;
+do $$ begin
+raise notice 'alarms';
+end $$;
 --------------------------------------------------------------------------------
 
 (source_file
@@ -53,12 +44,27 @@ $$;
     (block
       (dollar_quote)
       (body
-        (return_statement
-          (execute_statement
-            (function_call
-              (identifier)
-              (dollar_quote_string)
-              (identifier))
-            (execute_using
-              (identifier)))))
+        (raise_statement
+          (identifier)
+          (string)))
+      (dollar_quote))))
+
+================================================================================
+with level and args
+================================================================================
+do $$ begin
+raise notice 'alarms %d', _foo, bar;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (raise_statement
+          (identifier)
+          (string)
+          (identifier)
+          (identifier)))
       (dollar_quote))))

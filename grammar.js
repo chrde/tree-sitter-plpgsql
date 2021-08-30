@@ -47,6 +47,7 @@ module.exports = grammar({
       $.create_function_statement,
       $.create_table_statement,
       $.create_schema_statement,
+      $.create_type_statement,
       $.select_statement,
       $.insert_statement,
       $.delete_statement,
@@ -56,6 +57,13 @@ module.exports = grammar({
       $.create_index_statement,
       $.alter_table_statement,
       $.do_block,
+    ),
+
+    create_type_statement: $ => seq(
+      kw("create"), kw("type"), $.identifier, optional(choice(
+        seq(kw("as"), kw("enum"), "(", commaSep1($.string), ")"),
+        seq(kw("as"), "(", commaSep1($.var_declaration), ")"),
+      ))
     ),
 
     // TODO(chrde): update, values
@@ -384,11 +392,35 @@ module.exports = grammar({
         $._statement,
         $.assign_statement,
         $.return_statement,
+        $.raise_statement,
         $.if_statement,
+        $.for_statement,
         $.execute_statement,
         $.perform_statement,
       ),
       ";",
+    ),
+
+    for_statement: $ => seq(
+      kw("for"), commaSep1($.identifier), kw("in"), choice(
+        seq(
+          optional(kw("reverse")),
+          $._value_expression, "..", $._value_expression,
+          optional(seq(kw("by"), $._value_expression))
+        ),
+        $.select_statement,
+        $.execute_statement,
+      ),
+      kw("loop"),
+      repeat($._plpgsql_statement),
+      kw("end"), kw("loop")
+    ),
+
+    // TODO(chrde): https://www.postgresql.org/docs/13/plpgsql-errors-and-messages.html
+    raise_statement: $ => seq(
+      kw("raise"), optional($.identifier),
+      $.string, 
+      optional(seq(",", commaSep($._value_expression)))
     ),
 
     if_statement: $ => seq(
@@ -405,11 +437,13 @@ module.exports = grammar({
       kw("execute"),
       $._value_expression,
       optional($.into),
-      optional(seq(kw("using"), commaSep1($._value_expression))),
+      optional($.execute_using),
     ),
+    execute_using: $ => seq(kw("using"), commaSep1($._value_expression)),
     assign_statement: $ => seq($.identifier, "=", $._value_expression),
     return_statement: $ => seq(kw("return"), choice(
       seq(kw("query"), $.select_statement),
+      seq(kw("query"), $.execute_statement),
       $._value_expression),
     ),
     perform_statement: $ => seq(kw("perform"), commaSep($.select_item)),
@@ -429,7 +463,8 @@ module.exports = grammar({
       optional($.select_group_by),
       optional($.select_having),
       optional($.select_order_by),
-      optional($.select_limit),
+      optional($._select_limit_offset),
+      optional($.into),
     )),
 
     with_query: $ => seq(kw("with"), commaSep1($.with_query_item)),
@@ -440,14 +475,22 @@ module.exports = grammar({
       optional(choice(kw("materialized"), seq(kw("not"), kw("materialized")))),
       "(", $._with_query_statement, ")"
     ),
-
     into: $ => seq(kw("into"), optional(kw("strict")), commaSep1($.identifier)),
     select_having: $ => seq(kw("having"), $._value_expression),
-    select_limit: $ => choice(
-      seq(kw("limit"), $._value_expression, kw("offset"), $._value_expression),
-      seq(kw("limit"), kw("all"), kw("offset"), $._value_expression),
-      seq(kw("offset"), $._value_expression, kw("limit"), kw("all")),
-      seq(kw("offset"), $._value_expression, kw("limit"), $._value_expression),
+    _select_limit_offset: $ => choice(
+      seq($.select_limit, optional($.select_offset)),
+      seq($.select_offset, optional($.select_limit)),
+    ),
+    select_limit: $ => seq(
+      kw("limit"),
+      choice(
+        kw("all"),
+        $._value_expression
+      )
+    ),
+    select_offset: $ => seq(
+      kw("offset"), $._value_expression,
+      optional(choice(kw("row"), kw("rows")))
     ),
     select_group_by: $ => seq(kw("group"), kw("by"), commaSep1($._value_expression)),
     select_order_by: $ => seq(kw("order"), kw("by"), commaSep1($.order_by_item)),
@@ -460,7 +503,7 @@ module.exports = grammar({
       optional($.identifier)
     ),
     select_from: $ => seq(kw("from"), commaSep1($.from_item)),
-    from_item: $ => seq(
+    from_item: $ => prec.left(seq(
       // TODO(chrde): https://www.postgresql.org/docs/current/sql-select.html
       choice(
         $.from_select,
@@ -468,7 +511,7 @@ module.exports = grammar({
         $.from_function,
       ),
       repeat($.join_item),
-    ),
+    )),
     from_select: $ => seq("(", $.select_statement, ")", optional(kw("as")), $.identifier),
     from_table: $ => seq($.identifier, optional(kw("as")), optional($.identifier)),
     from_function: $ => seq(
@@ -480,11 +523,11 @@ module.exports = grammar({
       )),
     ),
 
-    join_item: $ => choice(
-      seq(kw("natural"), $.join_type, $.from_table),
-      seq($.join_type, $.from_table, $.join_condition),
-      seq(kw("cross"), kw("join"), $.from_table)
-    ),
+    join_item: $ => prec.left(choice(
+      seq(kw("natural"), $.join_type, $.from_item),
+      seq($.join_type, $.from_item, $.join_condition),
+      seq(kw("cross"), kw("join"), $.from_item)
+    )),
     join_condition: $ => choice(
       seq(kw("on"), $._value_expression),
       seq(kw("using"), $._list_of_identifiers)
@@ -579,10 +622,12 @@ module.exports = grammar({
     if_exists: $ => seq(kw("if"), kw("exists")),
     as: $ => seq(kw("as"), $.identifier),
 
-    _type: $ => choice(
-      $.predefined_types,
-      $.identifier,
-      seq($._type, "[", "]"),
+    _type: $ => seq(
+      choice($.predefined_types, $.identifier),
+      optional(choice(
+        repeat1(seq("[", "]")),
+        kw("%rowtype"),
+        kw("%type")))
     ),
 
 // predefined_type:
@@ -639,8 +684,9 @@ module.exports = grammar({
     )),
 
     _value_expression: $ => choice(
-      $.string,
       $.number,
+      $.dollar_quote_string,
+      $.string,
       $.true,
       $.false,
       $.null,
@@ -650,7 +696,22 @@ module.exports = grammar({
       $.function_call,
       $.op_expression,
       $.time_expression,
+      // TODO(chrde): this one feels a bit hacky? perhaps move to identifier regexp
+      seq($.identifier, ".", $.star),
       $.identifier,
+    ),
+
+    // TODO(chrde): it does not handle nested dollar quotes... perhaps move to an external scanner?
+    dollar_quote_string: $ => seq(
+      "$", $._identifier, "$",
+        /(([^$]+)|(%\d+\$s)|(\$\d+))+/,
+        //                     ^
+        //                     |- matches $1 (execute ... using placeholders)
+        //           ^
+        //           |- matches %d1s (format placeholders)
+        //  ^
+        //  |- matches anything other than $
+      "$", $._identifier, "$",
     ),
 
     time_expression: $ => choice(
@@ -700,6 +761,9 @@ module.exports = grammar({
     star: $ => "*",
     any: $ => /.*/,
     number: $ => /\d+/,
-    identifier: $ => /[a-zA-Z0-9_]+[.a-zA-Z0-9_]*/,
+    identifier: $ => $._identifier,
+    _identifier: $ => /[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)*/,
+    //                                ^
+    //                                |- we dont want to match consecutive dots, e.g: 1..2 consists of 3 tokens
   }
 });

@@ -31,8 +31,8 @@ many declare(s)
 DO $$
 DECLARE one text;
 DECLARE
-    name text;
-    age bigint;
+    name foo%TYPE;
+    age bar%ROWTYPE;
 BEGIN END
 $$;
 --------------------------------------------------------------------------------

@@ -1,0 +1,123 @@
+================================================================================
+integer
+================================================================================
+do $$ begin
+for foo in 1..10 loop select 1; end loop;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (for_statement
+          (identifier)
+          (number)
+          (number)
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+integer by step
+================================================================================
+do $$ begin
+for foo in 1..do_something() by 5 loop select 1; end loop;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (for_statement
+          (identifier)
+          (number)
+          (function_call
+            (identifier))
+          (number)
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+integer reverse
+================================================================================
+do $$ begin
+for foo in reverse 10..1 by 5 loop select 1; end loop;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (for_statement
+          (identifier)
+          (number)
+          (number)
+          (number)
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+for over query
+================================================================================
+do $$ begin
+for foo, var in select generate_series(1,10) loop select 1; end loop;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (for_statement
+          (identifier)
+          (identifier)
+          (select_statement
+            (select_item
+              (function_call
+                (identifier)
+                (number)
+                (number))))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+for over execute
+================================================================================
+do $$ begin
+for foo, var in execute format($sql$ select $1 from %1$s; $sql$, _foo) using bar loop select 1; end loop;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (for_statement
+          (identifier)
+          (identifier)
+          (execute_statement
+            (function_call
+              (identifier)
+              (dollar_quote_string)
+              (identifier))
+            (execute_using
+              (identifier)))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))

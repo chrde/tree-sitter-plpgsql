@@ -13,8 +13,9 @@ SELECT name FROM products cross join items;
         (from_table
           (identifier))
         (join_item
-          (from_table
-            (identifier)))))))
+          (from_item
+            (from_table
+              (identifier))))))))
 
 ================================================================================
 join on
@@ -32,8 +33,9 @@ SELECT name FROM products join items on products.name = items.name;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (op_expression
               (identifier)
@@ -56,8 +58,9 @@ select name from products join items using(foo);
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))))))
 
@@ -77,8 +80,9 @@ select name from products natural join items;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier)))))))
+          (from_item
+            (from_table
+              (identifier))))))))
 
 ================================================================================
 inner join
@@ -96,8 +100,9 @@ select name from products inner join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -117,8 +122,9 @@ select name from products left join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -138,8 +144,9 @@ select name from products right join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -159,8 +166,9 @@ select name from products full join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -180,8 +188,9 @@ select name from products left outer join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -201,8 +210,9 @@ select name from products right outer join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -222,8 +232,9 @@ select name from products full outer join items on true;
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (true)))))))
 
@@ -253,15 +264,18 @@ select name from products
           (identifier))
         (join_item
           (join_type)
-          (from_table
-            (identifier)))
+          (from_item
+            (from_table
+              (identifier))))
         (join_item
-          (from_table
-            (identifier)))
+          (from_item
+            (from_table
+              (identifier))))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (op_expression
               (identifier)
@@ -269,43 +283,50 @@ select name from products
               (identifier))))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))
         (join_item
           (join_type)
-          (from_table
-            (identifier))
+          (from_item
+            (from_table
+              (identifier)))
           (join_condition
             (identifier)))))))

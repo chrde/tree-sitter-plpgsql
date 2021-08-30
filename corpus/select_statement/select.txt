@@ -37,6 +37,26 @@ select name into bar from items where true;
         (true)))))
 
 ================================================================================
+into at the end
+================================================================================
+select * from items where true into _bar;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (star))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_where
+      (where_filter
+        (true)))
+    (into
+      (identifier))))
+
+================================================================================
 into strict
 ================================================================================
 select name into strict bar from items where true;
@@ -158,9 +178,9 @@ select name limit 1;
 (source_file
   (select_statement
     (select_item
-      (identifier)))
-  (ERROR
-    (number)))
+      (identifier))
+    (select_limit
+      (number))))
 
 ================================================================================
 limit offet
@@ -173,7 +193,8 @@ select name limit 1 offset 5;
     (select_item
       (identifier))
     (select_limit
-      (number)
+      (number))
+    (select_offset
       (number))))
 
 ================================================================================
@@ -186,8 +207,9 @@ select name offset 5 limit 1;
   (select_statement
     (select_item
       (identifier))
+    (select_offset
+      (number))
     (select_limit
-      (number)
       (number))))
 
 ================================================================================
@@ -200,7 +222,8 @@ select name limit all offset 5;
   (select_statement
     (select_item
       (identifier))
-    (select_limit
+    (select_limit)
+    (select_offset
       (number))))
 
 ================================================================================
@@ -213,8 +236,9 @@ select name offset 5 limit all;
   (select_statement
     (select_item
       (identifier))
-    (select_limit
-      (number))))
+    (select_offset
+      (number))
+    (select_limit)))
 
 ================================================================================
 with cte
@@ -236,6 +260,22 @@ select * from foo;
               (from_table
                 (identifier)))))))
     (select_item
+      (star))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))))
+
+================================================================================
+select alias star
+================================================================================
+SELECT foo.* FROM foo;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier)
       (star))
     (select_from
       (from_item
