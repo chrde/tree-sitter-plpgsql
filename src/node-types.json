@@ -438,6 +438,10 @@
           "named": true
         },
         {
+          "type": "drop_function_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
           "named": true
         },
@@ -565,6 +569,16 @@
         }
       ]
     }
+  },
+  {
+    "type": "comparison_kw",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "comparison_null",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "comparison_op",
@@ -1011,6 +1025,48 @@
     "fields": {}
   },
   {
+    "type": "drop_function_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "if_exists",
+          "named": true
+        },
+        {
+          "type": "predefined_types",
+          "named": true
+        },
+        {
+          "type": "var_declaration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_function_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "drop_function_item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "execute_statement",
     "named": true,
     "fields": {},
@@ -1215,6 +1271,10 @@
         },
         {
           "type": "dollar_quote_string",
+          "named": true
+        },
+        {
+          "type": "drop_function_statement",
           "named": true
         },
         {
@@ -1731,6 +1791,10 @@
           "named": true
         },
         {
+          "type": "drop_function_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
           "named": true
         },
@@ -2206,6 +2270,14 @@
         },
         {
           "type": "cast",
+          "named": true
+        },
+        {
+          "type": "comparison_kw",
+          "named": true
+        },
+        {
+          "type": "comparison_null",
           "named": true
         },
         {
@@ -3133,6 +3205,10 @@
           "named": true
         },
         {
+          "type": "drop_function_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -3737,6 +3813,18 @@
     "named": false
   },
   {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "&<",
+    "named": false
+  },
+  {
+    "type": "&>",
+    "named": false
+  },
+  {
     "type": "'",
     "named": false
   },
@@ -3765,6 +3853,10 @@
     "named": false
   },
   {
+    "type": "-|-",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -3789,11 +3881,19 @@
     "named": false
   },
   {
+    "type": "<<",
+    "named": false
+  },
+  {
     "type": "<=",
     "named": false
   },
   {
     "type": "<>",
+    "named": false
+  },
+  {
+    "type": "<@",
     "named": false
   },
   {
@@ -3806,6 +3906,14 @@
   },
   {
     "type": ">=",
+    "named": false
+  },
+  {
+    "type": ">>",
+    "named": false
+  },
+  {
+    "type": "@>",
     "named": false
   },
   {
@@ -3929,6 +4037,10 @@
     "named": false
   },
   {
+    "type": "day",
+    "named": false
+  },
+  {
     "type": "declare",
     "named": false
   },
@@ -4037,6 +4149,10 @@
     "named": false
   },
   {
+    "type": "hour",
+    "named": false
+  },
+  {
     "type": "if",
     "named": false
   },
@@ -4081,7 +4197,35 @@
     "named": false
   },
   {
+    "type": "interval",
+    "named": false
+  },
+  {
     "type": "into",
+    "named": false
+  },
+  {
+    "type": "is",
+    "named": false
+  },
+  {
+    "type": "is distinct from",
+    "named": false
+  },
+  {
+    "type": "is not distinct from",
+    "named": false
+  },
+  {
+    "type": "is not null",
+    "named": false
+  },
+  {
+    "type": "is null",
+    "named": false
+  },
+  {
+    "type": "isnull",
     "named": false
   },
   {
@@ -4121,7 +4265,15 @@
     "named": false
   },
   {
+    "type": "minute",
+    "named": false
+  },
+  {
     "type": "minvalue",
+    "named": false
+  },
+  {
+    "type": "month",
     "named": false
   },
   {
@@ -4142,6 +4294,10 @@
   },
   {
     "type": "nothing",
+    "named": false
+  },
+  {
+    "type": "notnull",
     "named": false
   },
   {
@@ -4265,6 +4421,10 @@
     "named": false
   },
   {
+    "type": "second",
+    "named": false
+  },
+  {
     "type": "select",
     "named": false
   },
@@ -4382,6 +4542,10 @@
   },
   {
     "type": "with",
+    "named": false
+  },
+  {
+    "type": "year",
     "named": false
   },
   {

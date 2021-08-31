@@ -1,13 +1,12 @@
-.DEFAULT_GOAL := build
-.PHONY: build test bless
+.DEFAULT_GOAL := g
+.PHONY: g t b
 
-build:
+g:
 	tree-sitter generate
 
-test:
-	@$(MAKE) --no-print-directory build
+t:
+	# @$(MAKE) --no-print-directory build
 	tree-sitter test
 
-bless:
-	@$(MAKE) --no-print-directory build
+b:
 	tree-sitter test --update
