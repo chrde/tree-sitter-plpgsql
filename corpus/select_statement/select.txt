@@ -142,6 +142,24 @@ select name from items group by 1, 2;
       (number))))
 
 ================================================================================
+group by with parens
+================================================================================
+select name from items group by (1, 2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (identifier))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))
+    (select_group_by
+      (number)
+      (number))))
+
+================================================================================
 order by
 ================================================================================
 select name from items order by 1, 2 asc, 3 desc, 4 + 4;

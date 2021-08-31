@@ -511,7 +511,13 @@ module.exports = grammar({
       kw("offset"), $._value_expression,
       optional(choice(kw("row"), kw("rows")))
     ),
-    select_group_by: $ => seq(kw("group"), kw("by"), commaSep1($._value_expression)),
+    // TODO(chrde): rollup, cube, grouping sets
+    select_group_by: $ => prec(1, seq(kw("group"), kw("by"),
+      choice(
+        seq("(", commaSep1($._value_expression), ")"),
+        commaSep1($._value_expression),
+      ),
+    )),
     select_order_by: $ => seq(kw("order"), kw("by"), commaSep1($.order_by_item)),
     order_by_item: $ => seq($._value_expression, optional($.order_by_direction)),
     order_by_direction: $ => choice(kw("asc"), kw("desc")),
