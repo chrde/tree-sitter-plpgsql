@@ -741,6 +741,19 @@ module.exports = grammar({
 
     time_expression: $ => choice(
       seq($.identifier, kw("at"), kw("time"), kw("zone"), $._value_expression),
+      // TODO(chrde): this is plain wrong - https://www.postgresql.org/docs/13/datatype-datetime.html
+      seq(kw("interval"), $.string, optional($._interval_fields)),
+    ),
+
+    _interval_fields: $ => choice(
+      kw("year"), kw("month"), kw("day"), kw("hour"), kw("minute"), kw("second"),
+      seq(kw("year"), kw("to"), kw("month")),
+      seq(kw("day"), kw("to"), kw("hour")),
+      seq(kw("day"), kw("to"), kw("minute")),
+      seq(kw("day"), kw("to"), kw("second")),
+      seq(kw("hour"), kw("to"), kw("minute")),
+      seq(kw("hour"), kw("to"), kw("second")),
+      seq(kw("minute"), kw("to"), kw("second")),
     ),
 
     function_call: $ => seq(
@@ -754,7 +767,7 @@ module.exports = grammar({
     ),
 
     op_expression: $ => choice(
-      prec.left(12, seq($._value_expression, $.cast, $._value_expression)),
+      prec.left(12, seq($._value_expression, $.cast, $.identifier)),
       // array access
       prec.right(10, seq(choice($.minus, $.plus), $._value_expression)),
       // ^

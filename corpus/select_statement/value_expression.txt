@@ -244,3 +244,37 @@ SELECT
         (identifier)
         (comparison_null)))))
 
+================================================================================
+time expressions
+================================================================================
+SELECT
+    foo::interval,
+    foo at time zone 'utc',
+    interval '1 day',
+    interval '1' hour to second,
+    interval '1' day + interval '3' month;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (op_expression
+        (identifier)
+        (cast)
+        (identifier)))
+    (select_item
+      (time_expression
+        (identifier)
+        (string)))
+    (select_item
+      (time_expression
+        (string)))
+    (select_item
+      (time_expression
+        (string)))
+    (select_item
+      (op_expression
+        (time_expression
+          (string))
+        (time_expression
+          (string))))))
