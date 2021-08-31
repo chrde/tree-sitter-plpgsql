@@ -214,3 +214,33 @@ SELECT 'hello' || 'quote''s everywh''ere';
         (string)
         (other_op)
         (string)))))
+
+================================================================================
+is null, isnull, is not null, notnull
+================================================================================
+SELECT
+    foo is null,
+    foo is not null,
+    foo isnull,
+    foo notnull;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (op_expression
+        (identifier)
+        (comparison_null)))
+    (select_item
+      (op_expression
+        (identifier)
+        (comparison_null)))
+    (select_item
+      (op_expression
+        (identifier)
+        (comparison_null)))
+    (select_item
+      (op_expression
+        (identifier)
+        (comparison_null)))))
+
