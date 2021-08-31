@@ -45,6 +45,7 @@ module.exports = grammar({
     _statement: $ => choice(
       $.psql_statement,
       $.create_function_statement,
+      $.drop_function_statement,
       $.create_table_statement,
       $.create_schema_statement,
       $.create_type_statement,
@@ -58,6 +59,24 @@ module.exports = grammar({
       $.alter_table_statement,
       $.do_block,
     ),
+
+    drop_function_statement: $ => seq(
+      kw("drop"), kw("function"),
+      commaSep1($.drop_function_item),
+      optional(choice(kw("cascade"), kw("restrict")))
+    ),
+
+    drop_function_item: $ => seq(
+      optional($.if_exists),
+      $.identifier,
+      optional(
+        seq(
+          "(",
+          commaSep(
+            choice($.var_declaration, $._type,)
+          ),
+          ")",
+    ))),
 
     create_type_statement: $ => seq(
       kw("create"), kw("type"), $.identifier, optional(choice(
