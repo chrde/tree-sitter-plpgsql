@@ -757,7 +757,8 @@ module.exports = grammar({
       prec.left(6, seq($._value_expression, $.other_op, $._value_expression)),
       // between in like ilike similar
       prec.left(4, seq($._value_expression, $.comparison_op, $._value_expression,)),
-      // is isnull notnull
+      prec.left(3, seq($._value_expression, $.comparison_kw, $._value_expression,)),
+      prec.left(3, seq($._value_expression, $.comparison_null)),
       prec.right(2, seq($.not, $._value_expression)),
       prec.left(1, seq($._value_expression, choice($.and, $.or), $._value_expression,)),
     ),
@@ -766,8 +767,19 @@ module.exports = grammar({
 
     // TODO(chrde): https://www.postgresql.org/docs/13/sql-syntax-lexical.html
     comparison_op: $ => choice("<", ">", "=", "<=", ">=", "<>", "!="),
+    comparison_null: $ => choice(
+      kw("is null"),
+      kw("isnull"),
+      kw("is not null"),
+      kw("notnull"),
+    ),
+    comparison_kw: $ => choice(
+      kw("is"),
+      kw("is distinct from"),
+      kw("is not distinct from")
+    ),
     // TODO(chrde): this should be a regex
-    other_op: $ => choice("||"),
+    other_op: $ => choice("||", "<@", "@>", "<<", ">>", "&&", "&<", "&>", "-|-"),
     cast: $ => "::",
     minus: $ => "-",
     plus: $ => "+",

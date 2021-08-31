@@ -154,3 +154,71 @@ end $$;
             (return_statement
               (number)))))
       (dollar_quote))))
+
+================================================================================
+if is not null
+================================================================================
+do $$ begin
+if foo is not null then select 1; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_null))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+if is not distinct from
+================================================================================
+do $$ begin
+if foo is not distinct from bar then select 1; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_kw)
+            (identifier))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+if is distinct from
+================================================================================
+do $$ begin
+if foo is distinct from bar then select 1; end if;
+end $$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (if_statement
+          (op_expression
+            (identifier)
+            (comparison_kw)
+            (identifier))
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
