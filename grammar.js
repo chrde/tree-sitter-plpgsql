@@ -459,7 +459,7 @@ module.exports = grammar({
       optional($.execute_using),
     ),
     execute_using: $ => seq(kw("using"), commaSep1($._value_expression)),
-    assign_statement: $ => seq($.identifier, "=", $._value_expression),
+    assign_statement: $ => seq($.identifier, choice("=", ":="), $._value_expression),
     return_statement: $ => seq(kw("return"), choice(
       seq(kw("query"), $.select_statement),
       seq(kw("query"), $.execute_statement),

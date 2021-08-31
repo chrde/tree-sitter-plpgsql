@@ -147,6 +147,7 @@ DO $$
 BEGIN
     SELECT 1;
     foo.bar = lower(foo.baz);
+    foo.bar := lower(foo.baz);
     RETURN 2;
 END
 $$;
@@ -160,6 +161,11 @@ $$;
         (select_statement
           (select_item
             (number)))
+        (assign_statement
+          (identifier)
+          (function_call
+            (identifier)
+            (identifier)))
         (assign_statement
           (identifier)
           (function_call
