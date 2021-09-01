@@ -1,0 +1,25 @@
+================================================================================
+get diagnostics
+================================================================================
+DO $$
+BEGIN
+    get current diagnostics foo = ROW_COUNT;
+    get diagnostics bar := ROW_COUNT;
+END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (get_diagnostics_statement
+          (assign_statement
+            (identifier)
+            (identifier)))
+        (get_diagnostics_statement
+          (assign_statement
+            (identifier)
+            (identifier))))
+      (dollar_quote))))

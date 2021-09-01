@@ -410,6 +410,7 @@ module.exports = grammar({
       choice(
         $._statement,
         $.assign_statement,
+        $.get_diagnostics_statement,
         $.return_statement,
         $.raise_statement,
         $.if_statement,
@@ -419,6 +420,8 @@ module.exports = grammar({
       ),
       ";",
     ),
+
+    get_diagnostics_statement: $ => seq(kw("get"), optional(kw("current")), kw("diagnostics"), $.assign_statement),
 
     for_statement: $ => seq(
       kw("for"), commaSep1($.identifier), kw("in"), choice(
