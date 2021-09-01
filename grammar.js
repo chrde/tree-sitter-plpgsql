@@ -582,7 +582,13 @@ module.exports = grammar({
         $.string,
       ),
       kw("language"), choice($.identifier, $.string),
-      optional($.function_volatility)
+      optional($.function_volatility),
+      optional($.function_run_as),
+    ),
+
+    function_run_as: $ => seq(
+      kw("security"),
+      choice(kw("invoker"), kw("definer"))
     ),
 
     function_return: $ => seq(

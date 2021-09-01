@@ -123,3 +123,37 @@ CREATE FUNCTION FOO () RETURNS TABLE(a text, b bigint) AS 'select' LANGUAGE sql;
           (identifier))))
     (string)
     (identifier)))
+
+================================================================================
+security definer
+================================================================================
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql SECURITY definer;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)
+    (function_run_as)))
+
+================================================================================
+security invoker
+================================================================================
+CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql SECURITY INVOKER;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)
+    (function_run_as)))
