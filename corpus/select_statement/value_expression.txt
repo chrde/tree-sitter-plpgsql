@@ -212,6 +212,50 @@ SELECT 'hello' || 'quote''s everywh''ere';
         (string)))))
 
 ================================================================================
+contains_op
+================================================================================
+SELECT
+    1 in (1, 2),
+    'one' in ('one', 'two'),
+    2 between 4 and 8,
+    'foo' like '%oo',
+    'foo' ilike '%oo';
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (op_expression
+        (number)
+        (contains_op)
+        (number)
+        (number)))
+    (select_item
+      (op_expression
+        (string)
+        (contains_op)
+        (string)
+        (string)))
+    (select_item
+      (op_expression
+        (op_expression
+          (number)
+          (contains_op)
+          (number))
+        (and)
+        (number)))
+    (select_item
+      (op_expression
+        (string)
+        (contains_op)
+        (string)))
+    (select_item
+      (op_expression
+        (string)
+        (contains_op)
+        (string)))))
+
+================================================================================
 is null, isnull, is not null, notnull
 ================================================================================
 SELECT

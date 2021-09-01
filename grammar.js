@@ -729,7 +729,7 @@ module.exports = grammar({
       $.null,
       $.star,
       seq("(", $.select_statement, ")"),
-      seq("(", $._value_expression, ")"),
+      seq("(", commaSep1($._value_expression), ")"),
       $.function_call,
       $.op_expression,
       $.time_expression,
@@ -786,7 +786,7 @@ module.exports = grammar({
       prec.left(8, seq($._value_expression, choice("*", "/", "%"), $._value_expression,)),
       prec.left(7, seq($._value_expression, choice("-", "+"), $._value_expression,)),
       prec.left(6, seq($._value_expression, $.other_op, $._value_expression)),
-      // between in like ilike similar
+      prec.left(5, seq($._value_expression, $.contains_op, $._value_expression,)),
       prec.left(4, seq($._value_expression, $.comparison_op, $._value_expression,)),
       prec.left(3, seq($._value_expression, $.comparison_kw, $._value_expression,)),
       prec.left(3, seq($._value_expression, $.comparison_null)),
@@ -798,6 +798,8 @@ module.exports = grammar({
 
     // TODO(chrde): https://www.postgresql.org/docs/13/sql-syntax-lexical.html
     comparison_op: $ => choice("<", ">", "=", "<=", ">=", "<>", "!="),
+    // TODO(chrde): is there a better name other than `contains_op`?
+    contains_op: $ => choice(kw("between"), kw("in"), kw("like"), kw("ilike")),
     comparison_null: $ => choice(
       kw("is null"),
       kw("isnull"),
