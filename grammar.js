@@ -506,7 +506,7 @@ module.exports = grammar({
     with_query: $ => seq(kw("with"), commaSep1($.with_query_item)),
     with_query_item: $ => seq(
       $.identifier,
-      // TODO(chrde): columns
+      optional($._list_of_identifiers),
       kw("as"),
       optional(choice(kw("materialized"), seq(kw("not"), kw("materialized")))),
       "(", $._with_query_statement, ")"

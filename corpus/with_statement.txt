@@ -24,6 +24,33 @@ with w as (select * from foo) select * from w;
           (identifier))))))
 
 ================================================================================
+with column names
+================================================================================
+with w(foo, bar) as (select * from foo) select * from w;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (with_query
+      (with_query_item
+        (identifier)
+        (identifier)
+        (identifier)
+        (select_statement
+          (select_item
+            (star))
+          (select_from
+            (from_item
+              (from_table
+                (identifier)))))))
+    (select_item
+      (star))
+    (select_from
+      (from_item
+        (from_table
+          (identifier))))))
+
+================================================================================
 materialized
 ================================================================================
 with w as materialized (select * from foo) select * from w;
@@ -107,6 +134,29 @@ with new as (insert into foo values(1)) select 1;
           (insert_items
             (insert_item
               (number))))))
+    (select_item
+      (number))))
+
+================================================================================
+with update
+================================================================================
+with new as (update foo set bar = 1 returning *) select 1;
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (with_query
+      (with_query_item
+        (identifier)
+        (update_statement
+          (identifier)
+          (update_set
+            (identifier)
+            (update_value
+              (number)))
+          (returning
+            (select_item
+              (star))))))
     (select_item
       (number))))
 
