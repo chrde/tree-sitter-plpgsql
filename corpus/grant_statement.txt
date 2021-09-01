@@ -15,7 +15,7 @@ grant all on table foo to postgres;
 ================================================================================
 all privileges
 ================================================================================
-grant all privileges on table foo.bar to postgres;
+GRANT ALL PRIVILEGES ON TABLE FOO.BAR TO POSTGRES;
 --------------------------------------------------------------------------------
 
 (source_file

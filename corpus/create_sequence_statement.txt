@@ -222,7 +222,6 @@ owned by none;
     (as
       (identifier))
     (sequence_increment
-      (ERROR)
       (number))
     (sequence_min
       (number))

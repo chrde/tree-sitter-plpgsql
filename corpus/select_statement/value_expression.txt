@@ -33,9 +33,7 @@ SELECT 1234, -25, TRUE, FALSE, NULL, *;
     (select_item
       (number))
     (select_item
-      (op_expression
-        (minus)
-        (number)))
+      (number))
     (select_item
       (true))
     (select_item
@@ -89,9 +87,7 @@ SELECT -22 + - (5 + 1);
   (select_statement
     (select_item
       (op_expression
-        (op_expression
-          (minus)
-          (number))
+        (number)
         (op_expression
           (minus)
           (op_expression

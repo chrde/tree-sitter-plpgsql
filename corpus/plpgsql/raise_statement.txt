@@ -11,7 +11,7 @@ end $$;
     (block
       (dollar_quote)
       (body
-        (ERROR))
+        (raise_statement))
       (dollar_quote))))
 
 ================================================================================

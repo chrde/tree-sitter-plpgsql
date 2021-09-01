@@ -297,7 +297,7 @@ module.exports = grammar({
 
 
     grant_privileges: $ => choice(
-      seq(kw("all"), optional("privileges")),
+      seq(kw("all"), optional(kw("privileges"))),
       commaSep1($.identifier),
     ),
 
@@ -437,9 +437,12 @@ module.exports = grammar({
 
     // TODO(chrde): https://www.postgresql.org/docs/13/plpgsql-errors-and-messages.html
     raise_statement: $ => seq(
-      kw("raise"), optional($.identifier),
-      $.string, 
-      optional(seq(",", commaSep($._value_expression)))
+      kw("raise"),
+      optional(seq(
+        optional($.identifier),
+        $.string, 
+        optional(seq(",", commaSep($._value_expression)))
+      )),
     ),
 
     if_statement: $ => seq(
@@ -810,7 +813,7 @@ module.exports = grammar({
     null: $ => kw("null"),
     star: $ => "*",
     any: $ => /.*/,
-    number: $ => /\d+/,
+    number: $ => /-?\d+/,
     identifier: $ => $._identifier,
     _identifier: $ => /[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)*/,
     //                                ^
