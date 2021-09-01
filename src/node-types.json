@@ -450,6 +450,10 @@
           "named": true
         },
         {
+          "type": "get_diagnostics_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -479,6 +483,10 @@
         },
         {
           "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -669,6 +677,11 @@
     "fields": {}
   },
   {
+    "type": "contains_op",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "create_function_statement",
     "named": true,
     "fields": {},
@@ -682,6 +695,10 @@
         },
         {
           "type": "function_return",
+          "named": true
+        },
+        {
+          "type": "function_run_as",
           "named": true
         },
         {
@@ -1294,6 +1311,10 @@
           "named": true
         },
         {
+          "type": "get_diagnostics_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -1355,6 +1376,10 @@
         },
         {
           "type": "true",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -1516,6 +1541,10 @@
             "named": false
           },
           {
+            "type": ",",
+            "named": false
+          },
+          {
             "type": ".",
             "named": false
           },
@@ -1605,6 +1634,11 @@
     }
   },
   {
+    "type": "function_run_as",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "function_signature",
     "named": true,
     "fields": {},
@@ -1627,6 +1661,21 @@
     "type": "function_volatility",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "get_diagnostics_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "assign_statement",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "grant_function",
@@ -1811,6 +1860,10 @@
           "named": true
         },
         {
+          "type": "get_diagnostics_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -1872,6 +1925,10 @@
         },
         {
           "type": "true",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -2086,21 +2143,6 @@
     }
   },
   {
-    "type": "insert_returning",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "select_item",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "insert_statement",
     "named": true,
     "fields": {},
@@ -2125,11 +2167,11 @@
           "named": true
         },
         {
-          "type": "insert_returning",
+          "type": "into",
           "named": true
         },
         {
-          "type": "into",
+          "type": "returning",
           "named": true
         },
         {
@@ -2282,6 +2324,10 @@
         },
         {
           "type": "comparison_op",
+          "named": true
+        },
+        {
+          "type": "contains_op",
           "named": true
         },
         {
@@ -2509,7 +2555,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "dollar_quote_string",
@@ -2650,6 +2696,21 @@
       "types": [
         {
           "type": "var_declaration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "returning",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "select_item",
           "named": true
         }
       ]
@@ -3223,6 +3284,10 @@
         {
           "type": "select_statement",
           "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
         }
       ]
     }
@@ -3524,6 +3589,41 @@
     }
   },
   {
+    "type": "update_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "from_item",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "returning",
+          "named": true
+        },
+        {
+          "type": "update_set",
+          "named": true
+        },
+        {
+          "type": "where_filter",
+          "named": true
+        },
+        {
+          "type": "with_query",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "update_value",
     "named": true,
     "fields": {},
@@ -3788,6 +3888,10 @@
         {
           "type": "select_statement",
           "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
         }
       ]
     }
@@ -3977,6 +4081,10 @@
     "named": false
   },
   {
+    "type": "between",
+    "named": false
+  },
+  {
     "type": "by",
     "named": false
   },
@@ -4025,6 +4133,10 @@
     "named": false
   },
   {
+    "type": "current",
+    "named": false
+  },
+  {
     "type": "current_user",
     "named": false
   },
@@ -4057,11 +4169,19 @@
     "named": false
   },
   {
+    "type": "definer",
+    "named": false
+  },
+  {
     "type": "delete",
     "named": false
   },
   {
     "type": "desc",
+    "named": false
+  },
+  {
+    "type": "diagnostics",
     "named": false
   },
   {
@@ -4137,6 +4257,10 @@
     "named": false
   },
   {
+    "type": "get",
+    "named": false
+  },
+  {
     "type": "grant",
     "named": false
   },
@@ -4154,6 +4278,10 @@
   },
   {
     "type": "if",
+    "named": false
+  },
+  {
+    "type": "ilike",
     "named": false
   },
   {
@@ -4205,6 +4333,10 @@
     "named": false
   },
   {
+    "type": "invoker",
+    "named": false
+  },
+  {
     "type": "is",
     "named": false
   },
@@ -4246,6 +4378,10 @@
   },
   {
     "type": "left",
+    "named": false
+  },
+  {
+    "type": "like",
     "named": false
   },
   {
@@ -4422,6 +4558,10 @@
   },
   {
     "type": "second",
+    "named": false
+  },
+  {
+    "type": "security",
     "named": false
   },
   {
