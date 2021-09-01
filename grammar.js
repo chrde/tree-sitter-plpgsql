@@ -52,12 +52,22 @@ module.exports = grammar({
       $.select_statement,
       $.insert_statement,
       $.delete_statement,
+      $.update_statement,
       $.grant_statement,
       $.create_trigger_statement,
       $.create_sequence_statement,
       $.create_index_statement,
       $.alter_table_statement,
       $.do_block,
+    ),
+
+    update_statement: $ => seq(
+      optional($.with_query),
+      kw("update"), $.identifier, optional(seq(optional(kw("as")), $.identifier)),
+      kw("set"), commaSep1($.update_set),
+      optional(seq(kw("from"), commaSep1($.from_item))),
+      optional($.where_filter),
+      optional($.returning),
     ),
 
     drop_function_statement: $ => seq(
@@ -85,11 +95,12 @@ module.exports = grammar({
       ))
     ),
 
-    // TODO(chrde): update, values
+    // TODO(chrde): values
     _with_query_statement: $ => choice(
       $.select_statement,
       $.insert_statement,
       $.delete_statement,
+      $.update_statement,
     ),
 
     insert_statement: $ => seq(
@@ -97,7 +108,7 @@ module.exports = grammar({
       kw("insert"), kw("into"), $.identifier, optional($.as),
       optional($._list_of_identifiers),
       $.insert_items, optional($.insert_conflict),
-      optional($.insert_returning),
+      optional($.returning),
       optional($.into),
     ),
     insert_items: $ => choice(
@@ -125,7 +136,7 @@ module.exports = grammar({
       seq($._list_of_identifiers, "=", optional(kw("row")), "(", commaSep1($.update_value), ")"),
     ),
     update_value: $ => choice(kw("default"), $._value_expression),
-    insert_returning: $ => seq(kw("returning"), commaSep1($.select_item)),
+    returning: $ => seq(kw("returning"), commaSep1($.select_item)),
 
     create_table_statement: $ => seq(
       kw("create"), optional($.temporary), optional(kw("unlogged")), kw("table"),

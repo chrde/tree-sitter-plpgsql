@@ -1,123 +1,156 @@
 ================================================================================
-basic
+update one field
 ================================================================================
-insert into my_table values(1);
+update items set foo = 'bar';
 --------------------------------------------------------------------------------
 
 (source_file
-  (insert_statement
+  (update_statement
     (identifier)
-    (insert_items
-      (insert_item
-        (number)))))
+    (update_set
+      (identifier)
+      (update_value
+        (string)))))
 
 ================================================================================
 alias
 ================================================================================
-insert into foo.my_table as alias values(1);
+update items as t set foo = 'bar';
 --------------------------------------------------------------------------------
 
 (source_file
-  (insert_statement
+  (update_statement
     (identifier)
-    (as
-      (identifier))
-    (insert_items
-      (insert_item
-        (number)))))
+    (identifier)
+    (update_set
+      (identifier)
+      (update_value
+        (string)))))
 
 ================================================================================
-default values
+update many fields
 ================================================================================
-insert into foo.my_table default values;
+update t set col1 = val1, col2 = default returning foo, *;
 --------------------------------------------------------------------------------
 
 (source_file
-  (insert_statement
+  (update_statement
     (identifier)
-    (insert_items)))
-
-================================================================================
-many values
-================================================================================
-insert into foo.my_table values(1, 2);
---------------------------------------------------------------------------------
-
-(source_file
-  (insert_statement
-    (identifier)
-    (insert_items
-      (insert_item
-        (number))
-      (insert_item
-        (number)))))
-
-================================================================================
-different kind of values
-================================================================================
-insert into foo.my_table values(1, DEFAULT, (select 1, 2));
---------------------------------------------------------------------------------
-
-(source_file
-  (insert_statement
-    (identifier)
-    (insert_items
-      (insert_item
-        (number))
-      (insert_item)
-      (insert_item
-        (select_statement
-          (select_item
-            (number))
-          (select_item
-            (number)))))))
-
-================================================================================
-insert from select
-================================================================================
-insert into foo.my_table select column1 from foo bar;
---------------------------------------------------------------------------------
-
-(source_file
-  (insert_statement
-    (identifier)
-    (insert_items
-      (select_statement
-        (select_item
-          (identifier))
-        (select_from
-          (from_item
-            (from_table
-              (identifier)
-              (identifier))))))))
-
-================================================================================
-returning
-================================================================================
-insert into foo values(1) returning *, 1;
---------------------------------------------------------------------------------
-
-(source_file
-  (insert_statement
-    (identifier)
-    (insert_items
-      (insert_item
-        (number)))
+    (update_set
+      (identifier)
+      (update_value
+        (identifier)))
+    (update_set
+      (identifier)
+      (update_value))
     (returning
       (select_item
-        (star))
+        (identifier))
       (select_item
-        (number)))))
+        (star)))))
+
+================================================================================
+update many fields(1)
+================================================================================
+update t set (col1, col2) = (val1, val2);
+--------------------------------------------------------------------------------
+
+(source_file
+  (update_statement
+    (identifier)
+    (update_set
+      (identifier)
+      (identifier)
+      (update_value
+        (identifier))
+      (update_value
+        (identifier)))))
+
+================================================================================
+update where
+================================================================================
+update t set foo = bar where column1 = 'magic';
+--------------------------------------------------------------------------------
+
+(source_file
+  (update_statement
+    (identifier)
+    (update_set
+      (identifier)
+      (update_value
+        (identifier)))
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (string)))))
+
+================================================================================
+update where subselect
+================================================================================
+UPDATE t SET a = b + 1 WHERE id = (SELECT foo FROM bar WHERE c = 'd');
+--------------------------------------------------------------------------------
+
+(source_file
+  (update_statement
+    (identifier)
+    (update_set
+      (identifier)
+      (update_value
+        (op_expression
+          (identifier)
+          (number))))
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (select_statement
+          (select_item
+            (identifier))
+          (select_from
+            (from_item
+              (from_table
+                (identifier))))
+          (select_where
+            (where_filter
+              (op_expression
+                (identifier)
+                (comparison_op)
+                (string)))))))))
+
+================================================================================
+update from
+================================================================================
+UPDATE foo SET bar = bar + 1 FROM t WHERE b = 'z';
+--------------------------------------------------------------------------------
+
+(source_file
+  (update_statement
+    (identifier)
+    (update_set
+      (identifier)
+      (update_value
+        (op_expression
+          (identifier)
+          (number))))
+    (from_item
+      (from_table
+        (identifier)))
+    (where_filter
+      (op_expression
+        (identifier)
+        (comparison_op)
+        (string)))))
 
 ================================================================================
 with cte
 ================================================================================
 with foo as (select * from bar)
-insert into my_table values(1);
+update foo set bar = 1;
 --------------------------------------------------------------------------------
 
 (source_file
-  (insert_statement
+  (update_statement
     (with_query
       (with_query_item
         (identifier)
@@ -129,32 +162,7 @@ insert into my_table values(1);
               (from_table
                 (identifier)))))))
     (identifier)
-    (insert_items
-      (insert_item
+    (update_set
+      (identifier)
+      (update_value
         (number)))))
-
-================================================================================
-returning into
-================================================================================
-insert into foo(bar, baz) select * from another
-returning id into _var;
---------------------------------------------------------------------------------
-
-(source_file
-  (insert_statement
-    (identifier)
-    (identifier)
-    (identifier)
-    (insert_items
-      (select_statement
-        (select_item
-          (star))
-        (select_from
-          (from_item
-            (from_table
-              (identifier))))))
-    (returning
-      (select_item
-        (identifier)))
-    (into
-      (identifier))))
