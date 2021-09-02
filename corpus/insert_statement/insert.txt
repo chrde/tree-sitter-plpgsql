@@ -92,6 +92,25 @@ insert into foo.my_table select column1 from foo bar;
               (identifier))))))))
 
 ================================================================================
+insert from select(1)
+================================================================================
+insert into foo.my_table (select column1 from foo bar);
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (insert_items
+      (select_statement
+        (select_item
+          (identifier))
+        (select_from
+          (from_item
+            (from_table
+              (identifier)
+              (identifier))))))))
+
+================================================================================
 returning
 ================================================================================
 insert into foo values(1) returning *, 1;

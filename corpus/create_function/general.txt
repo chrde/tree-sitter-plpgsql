@@ -86,9 +86,42 @@ CREATE FUNCTION FOO () RETURNS void AS 'select' LANGUAGE sql VOLATILE;
     (function_volatility)))
 
 ================================================================================
+returns array
+================================================================================
+CREATE FUNCTION FOO () RETURNS text[] AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (identifier))
+    (string)
+    (identifier)))
+
+================================================================================
 returns setof
 ================================================================================
 CREATE FUNCTION FOO () RETURNS SETOF text AS 'select' LANGUAGE sql;
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (function_signature
+      (identifier)
+      (function_parameters))
+    (function_return
+      (return_setof
+        (identifier)))
+    (string)
+    (identifier)))
+
+================================================================================
+returns setof array
+================================================================================
+CREATE FUNCTION FOO () RETURNS SETOF text[] AS 'select' LANGUAGE sql;
 --------------------------------------------------------------------------------
 
 (source_file

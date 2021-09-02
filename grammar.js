@@ -114,7 +114,8 @@ module.exports = grammar({
     insert_items: $ => choice(
       seq(kw("default"), kw("values")),
       seq(kw("values"), "(", commaSep($.insert_item), ")"),
-      $.select_statement
+      $.select_statement,
+      seq("(", $.select_statement, ")"),
     ),
     insert_item: $ => choice(
       kw("default"),
@@ -605,12 +606,12 @@ module.exports = grammar({
     function_return: $ => seq(
       kw("returns"),
       choice(
-        $.identifier,
+        $._type,
         $.return_setof,
         $.return_table,
       ),
     ),
-    return_setof: $ => seq(kw("setof"), $.identifier),
+    return_setof: $ => seq(kw("setof"), $._type),
     return_table: $ => seq(kw("table"), "(", commaSep1($.var_declaration), ")"),
 
     function_volatility: $ => choice(
@@ -755,7 +756,7 @@ module.exports = grammar({
     // TODO(chrde): it does not handle nested dollar quotes... perhaps move to an external scanner?
     dollar_quote_string: $ => seq(
       "$", $._identifier, "$",
-        /(([^$]+)|(%\d+\$s)|(\$\d+))+/,
+        /(([^$]+)|(%\d+\$[sI])|(\$\d+))+/,
         //                     ^
         //                     |- matches $1 (execute ... using placeholders)
         //           ^

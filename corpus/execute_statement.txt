@@ -141,7 +141,7 @@ do $$ begin
 execute format(
     $sql$
         update %1$s
-        set foo = $1
+        set foo = $1, %2$I = $1
     $sql$
     , _tbl_name) using bar;
 end $$;
