@@ -46,6 +46,7 @@ module.exports = grammar({
       $.psql_statement,
       $.create_function_statement,
       $.drop_function_statement,
+      $.drop_type_statement,
       $.create_table_statement,
       $.create_schema_statement,
       $.create_type_statement,
@@ -59,6 +60,13 @@ module.exports = grammar({
       $.create_index_statement,
       $.alter_table_statement,
       $.do_block,
+    ),
+
+    drop_type_statement: $ => seq(
+      kw("drop"), kw("type"),
+      optional($.if_exists),
+      commaSep1($.identifier),
+      optional(choice(kw("cascade"), kw("restrict")))
     ),
 
     update_statement: $ => seq(
@@ -423,6 +431,7 @@ module.exports = grammar({
         $._statement,
         $.assign_statement,
         $.get_diagnostics_statement,
+        $.open_cursor_statement,
         $.return_statement,
         $.raise_statement,
         $.if_statement,
@@ -431,6 +440,11 @@ module.exports = grammar({
         $.perform_statement,
       ),
       ";",
+    ),
+
+    open_cursor_statement: $ => seq(
+      kw("open"), $.identifier, kw("for"),
+      choice($.select_statement, $.execute_statement)
     ),
 
     get_diagnostics_statement: $ => seq(kw("get"), optional(kw("current")), kw("diagnostics"), $.assign_statement),

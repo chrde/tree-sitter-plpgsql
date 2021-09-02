@@ -1,0 +1,42 @@
+================================================================================
+open for select
+================================================================================
+DO $$
+BEGIN
+    OPEN curs for select 2;
+END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (open_cursor_statement
+          (identifier)
+          (select_statement
+            (select_item
+              (number)))))
+      (dollar_quote))))
+
+================================================================================
+open for execute
+================================================================================
+DO $$
+BEGIN
+    open foo for execute('select 1');
+END
+$$;
+--------------------------------------------------------------------------------
+
+(source_file
+  (do_block
+    (block
+      (dollar_quote)
+      (body
+        (open_cursor_statement
+          (identifier)
+          (execute_statement
+            (string))))
+      (dollar_quote))))
