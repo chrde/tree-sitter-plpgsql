@@ -12,6 +12,10 @@
           "named": true
         },
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -70,6 +74,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -289,6 +297,69 @@
     "fields": {}
   },
   {
+    "type": "array_constructor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
+          "type": "dollar_quote_string",
+          "named": true
+        },
+        {
+          "type": "false",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "null",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "op_expression",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "star",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "time_expression",
+          "named": true
+        },
+        {
+          "type": "true",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "as",
     "named": true,
     "fields": {},
@@ -311,6 +382,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -442,6 +517,10 @@
           "named": true
         },
         {
+          "type": "drop_type_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
           "named": true
         },
@@ -463,6 +542,10 @@
         },
         {
           "type": "insert_statement",
+          "named": true
+        },
+        {
+          "type": "open_cursor_statement",
           "named": true
         },
         {
@@ -523,6 +606,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "constraint_foreign_key",
           "named": true
@@ -601,6 +688,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -1084,6 +1175,25 @@
     }
   },
   {
+    "type": "drop_type_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "if_exists",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "execute_statement",
     "named": true,
     "fields": {},
@@ -1091,6 +1201,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -1158,6 +1272,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -1247,6 +1365,10 @@
           "named": true
         },
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "assign_statement",
           "named": true
         },
@@ -1295,6 +1417,10 @@
           "named": true
         },
         {
+          "type": "drop_type_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
           "named": true
         },
@@ -1340,6 +1466,10 @@
         },
         {
           "type": "op_expression",
+          "named": true
+        },
+        {
+          "type": "open_cursor_statement",
           "named": true
         },
         {
@@ -1474,6 +1604,10 @@
       "required": true,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -1549,6 +1683,10 @@
             "named": false
           },
           {
+            "type": "array_constructor",
+            "named": true
+          },
+          {
             "type": "dollar_quote_string",
             "named": true
           },
@@ -1620,6 +1758,10 @@
       "types": [
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "predefined_types",
           "named": true
         },
         {
@@ -1796,6 +1938,10 @@
           "named": true
         },
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "assign_statement",
           "named": true
         },
@@ -1844,6 +1990,10 @@
           "named": true
         },
         {
+          "type": "drop_type_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
           "named": true
         },
@@ -1889,6 +2039,10 @@
         },
         {
           "type": "op_expression",
+          "named": true
+        },
+        {
+          "type": "open_cursor_statement",
           "named": true
         },
         {
@@ -1942,6 +2096,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -2072,6 +2230,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -2205,6 +2367,10 @@
       "required": false,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -2311,6 +2477,10 @@
           "named": true
         },
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "cast",
           "named": true
         },
@@ -2379,6 +2549,10 @@
           "named": true
         },
         {
+          "type": "predefined_types",
+          "named": true
+        },
+        {
           "type": "select_statement",
           "named": true
         },
@@ -2396,6 +2570,29 @@
         },
         {
           "type": "true",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "open_cursor_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "execute_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "select_statement",
           "named": true
         }
       ]
@@ -2424,6 +2621,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -2558,6 +2759,10 @@
       "required": false,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -2619,6 +2824,10 @@
         {
           "type": "identifier",
           "named": true
+        },
+        {
+          "type": "predefined_types",
+          "named": true
         }
       ]
     }
@@ -2631,6 +2840,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -2755,6 +2968,10 @@
       "required": true,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -2813,6 +3030,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -2873,6 +3094,10 @@
       "required": true,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -2932,6 +3157,10 @@
       "required": false,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -2990,6 +3219,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -3270,6 +3503,10 @@
           "named": true
         },
         {
+          "type": "drop_type_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -3357,6 +3594,10 @@
       "required": false,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "constraint_foreign_key",
           "named": true
         },
@@ -3425,6 +3666,10 @@
       "required": true,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -3483,6 +3728,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -3632,6 +3881,10 @@
       "required": false,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -3737,6 +3990,10 @@
       "required": true,
       "types": [
         {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
           "type": "dollar_quote_string",
           "named": true
         },
@@ -3799,6 +4056,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "array_constructor",
+          "named": true
+        },
         {
           "type": "dollar_quote_string",
           "named": true
@@ -4054,6 +4315,10 @@
   },
   {
     "type": "and",
+    "named": false
+  },
+  {
+    "type": "array",
     "named": false
   },
   {
@@ -4458,6 +4723,10 @@
   },
   {
     "type": "on",
+    "named": false
+  },
+  {
+    "type": "open",
     "named": false
   },
   {
