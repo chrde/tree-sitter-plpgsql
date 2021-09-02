@@ -57,6 +57,38 @@ SELECT foo, foo.bar;
       (identifier))))
 
 ================================================================================
+arrays
+================================================================================
+SELECT
+    ARRAY[],
+    array[1, 2],
+    array[array[1, 2], array[3, 4]],
+    array[]::integer[];
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_item
+      (array_constructor))
+    (select_item
+      (array_constructor
+        (number)
+        (number)))
+    (select_item
+      (array_constructor
+        (array_constructor
+          (number)
+          (number))
+        (array_constructor
+          (number)
+          (number))))
+    (select_item
+      (op_expression
+        (array_constructor)
+        (cast)
+        (identifier)))))
+
+================================================================================
 binary_expression
 ================================================================================
 SELECT a + b - c / d * e % f;

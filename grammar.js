@@ -742,12 +742,15 @@ module.exports = grammar({
       seq("(", $.select_statement, ")"),
       seq("(", commaSep1($._value_expression), ")"),
       $.function_call,
+      $.array_constructor,
       $.op_expression,
       $.time_expression,
       // TODO(chrde): this one feels a bit hacky? perhaps move to identifier regexp
       seq($.identifier, ".", $.star),
       $.identifier,
     ),
+
+    array_constructor: $ => seq(kw("array"), "[", commaSep($._value_expression), "]"),
 
     // TODO(chrde): it does not handle nested dollar quotes... perhaps move to an external scanner?
     dollar_quote_string: $ => seq(
@@ -790,7 +793,7 @@ module.exports = grammar({
     ),
 
     op_expression: $ => choice(
-      prec.left(12, seq($._value_expression, $.cast, $.identifier)),
+      prec.left(12, seq($._value_expression, $.cast, $._type)),
       // array access
       prec.right(10, seq(choice($.minus, $.plus), $._value_expression)),
       // ^
